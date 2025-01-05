@@ -12,6 +12,7 @@ load_dotenv(find_dotenv())
 
 creating_env()
 
+
 IP = os.getenv('IP')
 PORT = os.getenv('PORT')
 if IP is None or PORT is None:
@@ -23,7 +24,7 @@ if IP is None or PORT is None:
             set_key(find_dotenv(), 'IP', IP)
             set_key(find_dotenv(), 'PORT', PORT)
         case 'n':
-            print("Plesae set IP and PORT in .env file")
+            print("Please set IP and PORT in .env file")
             print("Exiting...")
             exit()
 print(f"Server starting on IP: {IP}, PORT: {PORT}")
@@ -60,10 +61,10 @@ os.makedirs("records", exist_ok=True)
 
 print("Initializing model...")
 files_queue = Queue()
-# model = WhisperModel("turbo", device="cpu", compute_type="int8")
 model = WhisperModel("large-v3", device="cuda", compute_type="int8")
 print("Model initialized")
 print("Server started!")
+print("Press 'Ctrl+Pause' or 'Ctrl+Break' to stop the server")
 
 num_worker_threads = 3
 threads = []
@@ -72,7 +73,6 @@ for _ in range(num_worker_threads):
     thread.start()
     threads.append(thread)
 
-
 try:
     while True:
         conn, addr = sock.accept()
@@ -80,10 +80,9 @@ try:
         client_thread.start()
 finally:
     # Остановка потоков обработки файлов
+    print("Stopping server...")
     for _ in range(num_worker_threads):
         files_queue.put(None)
     for thread in threads:
         thread.join()
-
-
-# from receive_file import *
+    print("Server stopped")
