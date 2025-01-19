@@ -15,11 +15,16 @@ creating_env()
 
 IP = os.getenv('IP')
 PORT = os.getenv('PORT')
-if IP is None or PORT is None:
+if IP is None or IP == "" or PORT is None or PORT == "":
     choice = input("IP or PORT is not set. Do you want to set it now?(y/n): ")
     match choice:
         case 'y':
-            IP = input("Enter IP: ")
+            choice2 = input("Do you want to use local ip your computer?(y/n): ")
+            match choice2:
+                case 'y':
+                    IP = socket.gethostname()
+                case 'n':
+                    IP = input("Enter IP: ")
             PORT = input("Enter PORT: ")
             set_key(find_dotenv(), 'IP', IP)
             set_key(find_dotenv(), 'PORT', PORT)
@@ -29,8 +34,7 @@ if IP is None or PORT is None:
             exit()
 print(f"Server starting on IP: {IP}, PORT: {PORT}")
 DEVICE = os.getenv('DEVICE')
-if DEVICE is None:
-    # choice = input("DEVICE is not set. Do you want to set it now?(y/n): ")
+if DEVICE is None or DEVICE == "":
     choice = input("Do you want to use CPU or CUDA?(cpu/cuda): ")
     match choice:
         case 'cpu':
@@ -39,14 +43,6 @@ if DEVICE is None:
         case 'cuda':
             DEVICE = 'cuda'
             set_key(find_dotenv(), 'DEVICE', DEVICE)
-    # match choice:
-    #     case 'y':
-    #         DEVICE = input("Enter DEVICE(cpu/cuda): ")
-    #         set_key(find_dotenv(), 'DEVICE', DEVICE)
-    #     case 'n':
-    #         print("Please set DEVICE in .env file")
-    #         print("Exiting...")
-    #         exit()
 
 
 # Start listening
@@ -61,7 +57,7 @@ os.makedirs("records", exist_ok=True)
 
 print("Initializing model...")
 files_queue = Queue()
-model = WhisperModel("large-v3", device="cuda", compute_type="int8")
+model = WhisperModel("turbo", device=DEVICE, compute_type="int8")
 print("Model initialized")
 print("Server started!")
 print("Press 'Ctrl+Pause' or 'Ctrl+Break' to stop the server")
@@ -79,7 +75,7 @@ try:
         client_thread = Thread(target=handle_client, args=(conn, addr, files_queue))
         client_thread.start()
 finally:
-    # Остановка потоков обработки файлов
+    # Зупинка потоків обробки файлів
     print("Stopping server...")
     for _ in range(num_worker_threads):
         files_queue.put(None)

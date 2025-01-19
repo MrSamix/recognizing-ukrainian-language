@@ -38,7 +38,7 @@ def check_valid_ip_port():
 def settings():
     selector_window = tk.Toplevel()
     selector_window.resizable(False, False)
-    selector_window.title("Вибiр мікрофона")
+    selector_window.title("Налаштування")
     # selector_window.iconbitmap("settings.ico") # мініфріз на початку відкриття вікна
 
     # mic

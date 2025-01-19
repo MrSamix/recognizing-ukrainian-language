@@ -6,10 +6,9 @@ chunk = 1024
 sample_format = pyaudio.paInt16  
 channels = 1
 fs = 16000
-# seconds = 1
 seconds = 3
 def record_audio(filename = "output.wav"):
-    p = pyaudio.PyAudio()  # Create an interface to PortAudio
+    p = pyaudio.PyAudio()  # Створення об'єкту PyAudio
 
 
     stream = p.open(format=sample_format,

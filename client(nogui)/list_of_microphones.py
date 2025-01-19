@@ -23,7 +23,7 @@ def print_microphones():
         device_info = p.get_device_info_by_index(i)
         if device_info['maxInputChannels'] != 0 and device_info['hostApi'] == 0:
             print('Device ' + str(i) + ': ' + device_info['name'])
-    # p.terminate()
+    
 
 
 def return_microphone(code):

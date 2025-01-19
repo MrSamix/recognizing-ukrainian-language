@@ -46,13 +46,11 @@ def close_window():
         if messagebox.askokcancel("Йде запис", "Ви впевнені, що хочете вийти?"):
             stops_recording()
             stop_threads()
-            # stop_threads(thread_record, thread_send)
             animate_close()
     else:
         animate_close()
 
-def animate_window():
-    """Анімація появи вікна знизу."""
+def animate_window(): # Анімація появи вікна
     global y
     if y > target_y:  # Якщо вікно ще не досягло кінцевої позиції
         y -= 10
@@ -61,8 +59,7 @@ def animate_window():
     else:
         root.geometry(f"{width}x{height}+{x}+{target_y}")  # Фіксуємо позицію
 
-def animate_close():
-    """Анімація закриття вікна вниз."""
+def animate_close(): # Анімація закриття вікна
     global y
     if y < screen_height:  # Якщо вікно ще не вийшло за межі екрану
         y += 10
@@ -73,29 +70,25 @@ def animate_close():
 
 # Створення головного вікна
 root = tk.Tk()
-root.title("Мікрофон")
+root.title("Програма транскрибування мови")
 root.overrideredirect(True)  # Видалити стандартну рамку вікна
 
 style = ttk.Style(root)
 style.theme_use('winnative')
 
-# Параметри вікна
 width, height = 300, 200
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-# root.focus_set() #fff
-
 x = (screen_width - width) // 2  # Відцентрувати по горизонталі
-y = screen_height  # Початкова позиція (поза екраном)
-target_y = screen_height - height - 50  # Кінцева позиція
+y = screen_height  
+target_y = screen_height - height - 50
 
-# Встановлення початкового розміру та позиції вікна
+
 root.geometry(f"{width}x{height}+{x}+{y}")
-root.attributes("-topmost", True)  # Завжди зверху
+root.attributes("-topmost", True)
 root.attributes("-alpha", 0.95)  # Прозорість вікна
 
-# Головна рамка з закругленими краями
 main_frame = tk.Frame(root, bg="#2E2E2E", width=width, height=height, relief="raised", bd=0)
 main_frame.place(x=0, y=0)
 
@@ -104,31 +97,27 @@ main_frame.place(x=0, y=0)
 close_btn = tk.Button(main_frame, text="✖", font=("Arial", 12), bg="#2E2E2E", fg="white", borderwidth=0, command=close_window)
 close_btn.place(x=260, y=10)
 
-# label = tk.Label(main_frame, text=message, font=("Arial", 16), bg="#2E2E2E", fg="white")
-# label.place(x=100, y=40)
-
-# Кнопка для мікрофона (посередині, обведена колом)
+# Кнопка для мікрофона
 mic_frame = tk.Frame(main_frame, bg="#2E2E2E", highlightbackground="#00ADEF", highlightthickness=2, width=80, height=80)
 mic_frame.place(x=125, y=100) # byv 60
 mic_btn = tk.Button(mic_frame, text="🎤", font=("Arial", 20), bg="#2E2E2E", fg="#00ADEF", borderwidth=0, command=start_recording)
 mic_btn.pack(expand=True, fill="both")
 
-# Кнопка "Інформація" (праворуч)
+# Кнопка "Інформація"
 info_btn = tk.Button(main_frame, text="❓", font=("Arial", 14), bg="#2E2E2E", fg="white", borderwidth=0, command=show_info)
 info_btn.place(x=230, y=120)
 
-# Кнопка "Налаштування" (ліворуч)
+# Кнопка "Налаштування"
 settings_btn = tk.Button(main_frame, text="⚙️", font=("Arial", 14), bg="#2E2E2E", fg="white", borderwidth=0, command=settings)
 settings_btn.place(x=30, y=120)
 
-# Запускаємо анімацію появи вікна
+# Анімація появи вікна
 animate_window()
 
 # Keyboard
-kb.add_hotkey('Ctrl + /', lambda: start_recording()) #keyboard(recording, stop recording)
+kb.add_hotkey('Ctrl + /', lambda: start_recording())
 
 # Встановлюємо функцію зворотного виклику для обробки помилок
 callback_handler.set_error_callback(start_recording_with_delay)
 
-# Запускаємо головний цикл
 root.mainloop()

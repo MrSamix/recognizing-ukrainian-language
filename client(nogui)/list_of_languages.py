@@ -1,5 +1,4 @@
 import json
-# from faster_whisper import WhisperModel
 
 def get_native_name(code):
     with open("languages.json", "r", encoding="utf-8") as file:
@@ -7,7 +6,7 @@ def get_native_name(code):
     for lang in languages:
         if lang["code"] == code:
             return lang["native"]
-    return code # test -> None
+    return None
 
 
 def get_code_by_native_name(name):
@@ -16,7 +15,7 @@ def get_code_by_native_name(name):
     for lang in languages:
         if lang["native"] == name:
             return lang["code"]
-    return None # test -> None
+    return None
 
 
 

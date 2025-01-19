@@ -1,8 +1,5 @@
-# from faster_whisper import WhisperModel
-# Fix Ctrl + C
 import signal
 import sys
-
 import shutil
 from record import record_audio
 from threading import Thread
@@ -40,7 +37,7 @@ if SERVER_IP is None or SERVER_IP == "" or SERVER_PORT is None or SERVER_PORT ==
     if choice == 'y':
         choice2 = input("Use local ip your computer?(y/n): ")
         if choice2 == 'y':
-            SERVER_IP = socket.gethostname() # localhost???
+            SERVER_IP = socket.gethostname()
         else:
             SERVER_IP = input("Enter SERVER_IP: ")
         SERVER_PORT = input("Enter SERVER_PORT: ")
@@ -57,9 +54,6 @@ if os.path.exists("records"):
 os.mkdir("records")
 
 
-
-# Set a language
-# print(model.supported_languages)
 language = ""
 last_language = os.getenv('LAST_LANGUAGE')
 if last_language is None or last_language == "":
@@ -67,7 +61,7 @@ if last_language is None or last_language == "":
     print("Format: Code language - Native")
     for lang in list_of_avaibable_languages_codes:
         print(f"{lang} - {get_native_name(lang)}")  
-    last_language = input("Set a language code(or input auto): ") # for server
+    last_language = input("Set a language code(or input auto): ")
     set_key(find_dotenv(), 'LAST_LANGUAGE', last_language)
 else:
     choice = input(f"Do you want to use last language ({last_language})?(y/n): ")
@@ -78,10 +72,10 @@ else:
             print(f"{lang} - {get_native_name(lang)}")
         language = input("Set a language code(or input auto): ")
         set_key(find_dotenv(), 'LAST_LANGUAGE', language)
-if language == "auto" or last_language == "auto": # не передавати на сервер тоді
+if language == "auto" or last_language == "auto":
     language = None
 else:
-    language = last_language # розібратися з цим
+    language = last_language
 print("Press 'Ctrl + C' to stop program")
 files_queue = Queue()
 counter = 0
@@ -100,7 +94,7 @@ def sending_file():
         files_queue.task_done()
 
 
-# Запуск нескольких потоков для отправки файлов
+# Запуск декількох потоків для відправки файлів
 num_worker_threads = 3
 threads = []
 for _ in range(num_worker_threads):

@@ -15,8 +15,6 @@ import callback_handler
 
 recording = False
 
-# error_callback = None  # Функція зворотного виклику для обробки помилок
-
 load_dotenv(find_dotenv())
 
 UUID = os.getenv('UUID')
@@ -106,7 +104,6 @@ def write_text(text):
 
 
 def sending_file():
-    # global message
     while True:
         filename = files_queue.get()
         if filename is None:

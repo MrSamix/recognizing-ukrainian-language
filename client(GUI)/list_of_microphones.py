@@ -3,16 +3,14 @@ import pyaudio
 
 
 def select_microphone(index):
-   p = pyaudio.PyAudio()
-   device_info = p.get_device_info_by_index(index)
-   if device_info.get('maxInputChannels') > 0:
-      print(f"Selected Microphone: {device_info.get('name')}")
-    #   p.terminate()
-      return True
-   else:
-      print(f"No microphone at index {index}")
-#    p.terminate()
-   return False
+    p = pyaudio.PyAudio()
+    device_info = p.get_device_info_by_index(index)
+    if device_info.get('maxInputChannels') > 0:
+        print(f"Selected Microphone: {device_info.get('name')}")
+        return True
+    else:
+        print(f"No microphone at index {index}")
+    return False
 
 
 
@@ -22,7 +20,6 @@ def print_microphones():
         device_info = p.get_device_info_by_index(i)
         if device_info['maxInputChannels'] != 0 and device_info['hostApi'] == 0:
             print('Device ' + str(i) + ': ' + device_info['name'])
-    # p.terminate()
 
 
 def set_array_microphones():
@@ -43,11 +40,3 @@ def return_id_microphone(mic):
             if device_info['name'] == mic:
                 return i
     return 0
-
-# print("Available microphones:")
-# print_microphones()
-# choice = int(input("Enter the index of the microphone you want to use: "))
-# if select_microphone(choice):
-#     print("Microphone selected successfully")
-# else:
-#     print("Failed to select microphone")
