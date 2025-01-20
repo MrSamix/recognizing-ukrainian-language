@@ -76,6 +76,15 @@ if language == "auto" or last_language == "auto":
     language = None
 else:
     language = last_language
+
+print("Where print the text?")
+print("[1] - Console\n[2] - Your area")
+YourArea = False
+choice = input("Enter the number: ")
+if choice == '2':
+    print("Your text will be printed in the your area")
+    YourArea = True
+
 print("Press 'Ctrl + C' to stop program")
 files_queue = Queue()
 counter = 0
@@ -88,7 +97,7 @@ def sending_file():
         if filename is None:
             break
         try:
-            sf.sending_file(filename=filename, host=SERVER_IP, port=int(SERVER_PORT), client_uuid=UUID, language=language)
+            sf.sending_file(filename=filename, host=SERVER_IP, port=int(SERVER_PORT), client_uuid=UUID, language=language, YourArea=YourArea)
         except Exception as e:
             print(f"Failed to send {filename} to server: {e}")
         files_queue.task_done()

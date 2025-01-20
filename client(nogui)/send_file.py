@@ -1,8 +1,12 @@
 import socket
 import json
+import keyboard as kb
 
 
-def sending_file(filename, host, port, client_uuid, language=None):
+def write_text(text): # написання тексту в спец. полі
+    kb.write(text, delay=0.1)
+
+def sending_file(filename, host, port, client_uuid, language=None, YourArea=False):
     # Підключення до сервера
     sock = socket.socket()
     try:
@@ -26,13 +30,20 @@ def sending_file(filename, host, port, client_uuid, language=None):
             if not data:
                 break
             sock.send(data)
-    print(f"Sent file {filename} to server")
+    # print(f"Sent file {filename} to server") # for debug
 
     # Закриття відправлення файлу
     sock.shutdown(socket.SHUT_WR)
 
     # Отримання тексту від сервера
     processed_text = sock.recv(1024).decode()
-    print(f"Received processed text from server: {processed_text}")
+    if not processed_text == "" or processed_text is None:
+        if YourArea:
+            write_text(processed_text)
+        else:
+            print(processed_text)
+    #print(f"Received processed text from server: {processed_text}") # for debug
 
     sock.close()
+
+
