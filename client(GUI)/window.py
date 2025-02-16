@@ -37,8 +37,8 @@ def start_recording():
 
 
 def start_recording_with_delay():
-    time.sleep(5)  # Додаємо затримку перед повторним запуском запису
-    start_recording()
+    if is_recording:
+        start_recording()
 
 
 def close_window():

@@ -6,7 +6,7 @@ chunk = 1024
 sample_format = pyaudio.paInt16  
 channels = 1
 fs = 16000
-seconds = 3
+seconds = 5
 def record_audio(filename = "output.wav"):
     p = pyaudio.PyAudio()  # Створення об'єкту PyAudio
 
